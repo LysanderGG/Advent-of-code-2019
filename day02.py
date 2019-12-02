@@ -3,33 +3,34 @@ def read_input(filepath):
         return [int(x) for x in f.readline().split(",")]
 
 
-def solve(input, noun, verb):
-    input[1] = noun
-    input[2] = verb
+def solve(program, noun, verb):
+    program = list(program)
+    program[1] = noun
+    program[2] = verb
 
     current_op = 0
-    while (op := input[current_op]) != 99:
-        x, y, dist = input[current_op+1:current_op+4]
+    while (op := program[current_op]) != 99:
+        x, y, dist = program[current_op+1:current_op+4]
         if op == 1:
-            input[dist] = input[x] + input[y]
+            program[dist] = program[x] + program[y]
         elif op == 2:
-            input[dist] = input[x] * input[y]
+            program[dist] = program[x] * program[y]
+        else:
+            raise ValueError(f"Unknown instruction {op=}")
         current_op += 4
 
-    return input[0]
+    return program[0]
 
 
-def solve2(input, target_val):
+def solve2(program, target_val):
     for noun in range(100):
         for verb in range(100):
-            res = solve(list(input), noun, verb)
+            res = solve(program, noun, verb)
             if res == target_val:
                 return 100 * noun + verb
 
 
 if __name__ == "__main__":
-    input = read_input("day02.txt")
-    print(f"Part1: {solve(input, 12, 2)}")
-
-    input = read_input("day02.txt")
-    print(f"Part2: {solve2(input, 19690720)}")
+    program = read_input("day02.txt")
+    print(f"Part1: {solve(program, 12, 2)}")
+    print(f"Part2: {solve2(program, 19690720)}")
